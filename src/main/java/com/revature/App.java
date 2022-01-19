@@ -1,5 +1,6 @@
 package com.revature;
 
+import com.revature.controllers.AdminController;
 import com.revature.controllers.ClientController;
 import com.revature.controllers.Controller;
 import io.javalin.Javalin;
@@ -9,7 +10,7 @@ public class App {
 
     public static void main(String[] args) {
         app = Javalin.create();
-        configure(new ClientController());
+        configure(new ClientController(), new AdminController());
         app.start(7777);
     }
 
