@@ -61,4 +61,44 @@ public class BankAdminDAOImpl extends ClientDAOImpl{
         return false;
     }
 
+    public boolean deleteAccount(int accNumber) {
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "DELETE  FROM  accounts \n" +
+                    "WHERE acc_number = ?;";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setInt(1, accNumber);
+
+            statement.execute();
+
+            return true;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean editAccount(Account acc) {
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "UPDATE accounts SET acc_type=? WHERE acc_number = ?;";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            int count = 0;
+            statement.setString(++count, acc.getType());
+            statement.setInt(++count, acc.getNumber());
+
+
+            statement.execute();
+
+            return true;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

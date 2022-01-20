@@ -28,7 +28,25 @@ public class AdminController extends ClientController{
 
                 ctx.status(400);
             }
+    };
 
+    Handler deleteAccount = (ctx) -> {
+        String accNumStr = ctx.pathParam("accNumber");
+        int accNumber = Integer.parseInt(accNumStr);
+        ctx.result("Status delete account:"+adminService.deleteAccount(accNumber));
+//        ctx.json(adminService.showAllAccounts());
+        ctx.status(200);
+    };
+
+    Handler editAccount = (ctx) -> {
+
+            Account acc = ctx.bodyAsClass(Account.class);
+
+            if(adminService.editAccount(acc)){
+                ctx.status(202);
+            }else {
+                ctx.status(400);
+            }
 
     };
 
@@ -41,5 +59,8 @@ public class AdminController extends ClientController{
         app.patch("/admin/transfer/{accFrom-accTo-amount}", super.transfer);
         app.get("/admin", showAllAccounts);
         app.post("/admin_new", newAccount);
+        app.delete("/admin/delete/{accNumber}", deleteAccount);
+        app.patch("/admin_edit", editAccount);
+
     }
 }

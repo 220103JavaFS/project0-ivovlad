@@ -12,5 +12,7 @@ public class BankAdminService {
 
     public List<Account> showAllAccounts(){return adminDAO.showAllAccounts();}
     public boolean newAccount(Account acc){return adminDAO.newAccount(acc);}
+    public boolean deleteAccount(int number){return adminDAO.deleteAccount(number);}
+    public boolean editAccount(Account acc){return adminDAO.editAccount(acc);}
     }
 
