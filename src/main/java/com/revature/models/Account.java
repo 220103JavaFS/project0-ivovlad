@@ -34,7 +34,7 @@ public class Account {
         this.clientID = clientID;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
