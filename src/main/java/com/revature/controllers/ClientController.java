@@ -11,12 +11,19 @@ public class ClientController implements Controller{
     private ClientService clientService = new ClientService();
 
     Handler showAccounts = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&(ctx.sessionAttribute("admin")== "adm"||
+                                                    ctx.sessionAttribute("client")== "cl")){
         int clientNumber = parseInt(ctx.pathParam("clientNumber"));
         ctx.json(clientService.showMyAccounts(clientNumber));//ctx.result(clientService.showAccounts());//
         ctx.status(200);
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler withdraw = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&(ctx.sessionAttribute("admin")== "adm"||
+                ctx.sessionAttribute("client")== "cl")){
         String[] params = ctx.pathParam("accNum-balance").split("_");
         int accNum = Integer.parseInt(params[0]);
         Double bal = Double.parseDouble(params[1]);
@@ -27,9 +34,14 @@ public class ClientController implements Controller{
             ctx.result("clientService.withdraw(accNum,bal) returned false; Parameters supplied:accNum="+accNum+"; bal="+bal);
             ctx.status(400);
         }
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler deposit = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&(ctx.sessionAttribute("admin")== "adm"||
+                ctx.sessionAttribute("client")== "cl")){
         String[] params = ctx.pathParam("accNum-balance").split("_");
         int accNum = Integer.parseInt(params[0]);
         Double bal = Double.parseDouble(params[1]);
@@ -40,9 +52,14 @@ public class ClientController implements Controller{
             ctx.result("clientService.deposit(accNum,bal) returned false; Parameters supplied:accNum="+accNum+"; bal="+bal);
             ctx.status(400);
         }
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler transfer = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&(ctx.sessionAttribute("admin")== "adm"||
+                ctx.sessionAttribute("client")== "cl")){
         String[] params = ctx.pathParam("accFrom-accTo-amount").split("_");
         int accFrom = Integer.parseInt(params[0]);
         int accTo = Integer.parseInt(params[1]);
@@ -53,6 +70,9 @@ public class ClientController implements Controller{
         } else{
             ctx.result("clientService.transfer(accFrom,accTo,bal) returned false; Parameters supplied:accFrom="+accFrom+"; accTo="+accTo+"; amount"+amount);
             ctx.status(400);
+        }
+        }else {
+            ctx.status(401);
         }
     };
 

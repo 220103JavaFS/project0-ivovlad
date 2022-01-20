@@ -13,13 +13,18 @@ public class AdminController extends ClientController{
     private BankAdminService adminService = new BankAdminService();
 
     Handler showAllAccounts = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&(ctx.sessionAttribute("admin")== "adm" ||
+                                                    ctx.sessionAttribute("teller")== "tlr")){
 //        ctx.result("Hello");
         ctx.json(adminService.showAllAccounts());
         ctx.status(200);
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler newAccount = (ctx) -> {
-
+        if(ctx.req.getSession(false)!=null&&ctx.sessionAttribute("admin")== "adm"){
             Account acc = ctx.bodyAsClass(Account.class);
 //        ctx.result(String.valueOf(acc.getClientID()));
             if(adminService.newAccount(acc)){
@@ -28,18 +33,25 @@ public class AdminController extends ClientController{
 
                 ctx.status(400);
             }
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler deleteAccount = (ctx) -> {
+        if(ctx.req.getSession(false)!=null&&ctx.sessionAttribute("admin")== "adm"){
         String accNumStr = ctx.pathParam("accNumber");
         int accNumber = Integer.parseInt(accNumStr);
         ctx.result("Status delete account:"+adminService.deleteAccount(accNumber));
 //        ctx.json(adminService.showAllAccounts());
         ctx.status(200);
+        }else {
+            ctx.status(401);
+        }
     };
 
     Handler editAccount = (ctx) -> {
-
+        if(ctx.req.getSession(false)!=null&&ctx.sessionAttribute("admin")== "adm"){
             Account acc = ctx.bodyAsClass(Account.class);
 
             if(adminService.editAccount(acc)){
@@ -47,7 +59,9 @@ public class AdminController extends ClientController{
             }else {
                 ctx.status(400);
             }
-
+        }else {
+            ctx.status(401);
+        }
     };
 
 

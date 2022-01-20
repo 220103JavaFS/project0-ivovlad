@@ -11,13 +11,16 @@ public class TellerController implements Controller{
     BankTellerService tellerService = new BankTellerService();
 
     Handler newClient = (ctx) -> {
-
+        if(ctx.req.getSession(false)!=null&&ctx.sessionAttribute("teller")== "tlr"){
         Client cl = ctx.bodyAsClass(Client.class);
 
         if(tellerService.newClient(cl)){
             ctx.status(202);
         }else {
             ctx.status(400);
+        }
+        }else {
+            ctx.status(401);
         }
 
     };
