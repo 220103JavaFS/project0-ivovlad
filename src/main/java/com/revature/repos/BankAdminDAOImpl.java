@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankAdminDAOImpl extends ClientDAOImpl{
+
     public List<Account> showAllAccounts() {
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "SELECT * FROM accounts;";
